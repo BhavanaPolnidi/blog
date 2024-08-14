@@ -15,20 +15,27 @@ const Navbar = () => {
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'flex-start', 
-      backgroundColor: "#9de176", // Green background color
+      backgroundColor: "#28a745", // Green background color
       color: "white", // Text color
     }}>
       
-      {/* Left-aligned Heading */}
+      {/* Heading and Subtitle */}
       <div className="text-left" style={{ width: '100%', marginBottom: '20px' }}>
         <h1 style={{ 
-          margin: '0', 
-          fontSize: '3rem', 
+          margin: '20px 0 0 20px', // Top and left margins
+          fontSize: '2.5rem', 
           fontWeight: 'bold', 
           color: "white" // White text color for heading
         }}>
-          BLOGS
+          Click 'n Bloom
         </h1>
+        <h2 style={{ 
+          margin: '10px 0 0 20px', // Top margin and left margin
+          fontSize: '1.2rem', 
+          color: "white" // White text color for subtitle
+        }}>
+          Share Your Garden's Story
+        </h2>
       </div>
 
       {/* Buttons Section */}
