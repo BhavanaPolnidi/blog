@@ -38,6 +38,20 @@ const AddRecipe = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const onFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prevState => ({
+          ...prevState,
+          imgurl: reader.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -55,35 +69,49 @@ const AddRecipe = () => {
       imgurl,
     } = formData;
 
-    const result = await addRecipe(
-      title,
-      ist,
-      ing1,
-      ing2,
-      ing3,
-      ing4,
-      qty1,
-      qty2,
-      qty3,
-      qty4,
-      imgurl
-    );
+    try {
+      const result = await addRecipe(
+        title,
+        ist,
+        ing1,
+        ing2,
+        ing3,
+        ing4,
+        qty1,
+        qty2,
+        qty3,
+        qty4,
+        imgurl
+      );
 
-    toast.success(result.data.message, {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      transition: Bounce,
-    });
+      toast.success(result.data.message, {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
 
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      toast.error("Failed to add recipe", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
   };
 
   return (
@@ -97,7 +125,7 @@ const AddRecipe = () => {
           borderRadius: "10px",
         }}
       >
-        <h2 className="text-center">Add </h2>
+        <h2 className="text-center">Add POST</h2>
         <form
           onSubmit={onSubmitHandler}
           style={{
@@ -149,16 +177,30 @@ const AddRecipe = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="imgurl" className="form-label">
-              Image URL
+              Upload Image
             </label>
             <input
-              value={formData.imgurl}
-              onChange={onChangeHandler}
-              name="imgurl"
-              type="text"
+              type="file"
               className="form-control"
               id="imgurl"
+              accept="image/*"
+              onChange={onFileChange}
             />
+            {/* Display the uploaded image preview */}
+            {formData.imgurl && (
+              <div className="mt-3">
+                <img
+                  src={formData.imgurl}
+                  alt="Preview"
+                  style={{
+                    width: "100%",
+                    maxHeight: "200px",
+                    objectFit: "cover",
+                    borderRadius: "5px",
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="container d-grid col-6">
